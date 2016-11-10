@@ -4,6 +4,7 @@ import java.io.*;
 
 import lombok.Data;
 import xp.librarian.model.dto.User;
+import xp.librarian.utils.UploadUtils;
 
 /**
  * @author xp
@@ -13,7 +14,7 @@ public class UserVM implements Serializable {
 
     private static final long serialVersionUID = 5154135571483181793L;
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
@@ -26,7 +27,7 @@ public class UserVM implements Serializable {
             this.id = user.getId();
             this.username = user.getUsername();
             this.name = user.getName();
-            this.avatarUrl = user.getAvatarUrl();
+            this.avatarUrl = UploadUtils.makeUrl(user.getAvatarPath());
         }
         return this;
     }

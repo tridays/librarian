@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="xp.librarian.repository.mapper.LendMapper">
+<mapper namespace="xp.librarian.repository.mapper.LoanMapper">
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO `Lend`(
+        INSERT INTO `Loan`(
             `userId`,
             `traceId`,
             `status`,
-            `applyingTime`,
+            `createTime`,
+            `appointedDuration`,
             `appointedTime`,
-            `expiredTime`
+            `expiredTime`,
+            `createTime`
         ) VALUES (
             #{userId},
             #{traceId},
             #{status},
-            #{applyingTime},
+            #{createTime},
+            #{appointedDuration},
             #{appointedTime},
-            #{expiredTime}
+            #{expiredTime},
+            #{createTime}
         );
     </insert>
 
     <update id="update">
-        UPDATE `Lend`
+        UPDATE `Loan`
         <set>
             <if test="set.status != null">
                 `status`=#{set.status},
             </if>
-            <if test="set.renew != null">
-                `renew`=#{set.renew},
+            <if test="set.isReservation != null">
+                `isReservation`=#{set.isReservation},
+            </if>
+            <if test="set.isLate != null">
+                `isLate`=#{set.isLate},
+            </if>
+            <if test="set.renewCount != null">
+                `renewCount`=#{set.renewCount},
+            </if>
+            <if test="set.appointedDuration != null">
+                `appointedDuration`=#{set.appointedDuration},
+            </if>
+            <if test="set.expiredTime != null">
+                `expiredTime`=#{set.expiredTime},
+            </if>
+            <if test="set.activeTime != null">
+                `activeTime`=#{set.activeTime},
             </if>
             <if test="set.appointedTime != null">
                 `appointedTime`=#{set.appointedTime},
@@ -46,19 +65,22 @@
             <if test="where.status != null">
                 AND `status`=#{where.status}
             </if>
-            <if test="where.renew != null">
-                AND `renew`=#{where.renew}
+            <if test="where.isReservation != null">
+                AND `isReservation`=#{where.isReservation}
             </if>
-            <if test="where.appointedTime != null">
-                AND `appointedTime`=#{where.appointedTime}
+            <if test="where.isLate != null">
+                AND `isLate`=#{where.isLate}
+            </if>
+            <if test="where.renewCount != null">
+                AND `renewCount`=#{where.renewCount}
             </if>
         </where>
         LIMIT 1
         ;
     </update>
 
-    <select id="select" resultType="Lend">
-        SELECT * FROM `Lend`
+    <select id="select" resultType="Loan">
+        SELECT * FROM `Loan`
         <where>
             <if test="where.id != null">
                 AND `id`=#{where.id}
@@ -72,14 +94,17 @@
             <if test="where.status != null">
                 AND `status`=#{where.status}
             </if>
-            <if test="where.renew != null">
-                AND `renew`=#{where.renew}
+            <if test="where.isReservation != null">
+                AND `isReservation`=#{where.isReservation}
             </if>
-            <if test="where.appointedTime != null">
-                AND `appointedTime`=#{where.appointedTime}
+            <if test="where.isLate != null">
+                AND `isLate`=#{where.isLate}
+            </if>
+            <if test="where.renewCount != null">
+                AND `renewCount`=#{where.renewCount}
             </if>
         </where>
-        ORDER BY `applyingTime` DESC
+        ORDER BY `createTime` DESC
         <if test="limits != null &amp;&amp; limits != 0">
             LIMIT #{offset}, #{limits};
         </if>

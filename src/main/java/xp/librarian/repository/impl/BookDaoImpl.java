@@ -40,37 +40,35 @@ public class BookDaoImpl implements BookDao {
     public Book get(@NonNull String isbn, boolean force) {
         Book where = new Book();
         where.setIsbn(isbn);
-        return gets(where, 1, 1, force).stream()
+        return gets(where, 0L, 1, force).stream()
                 .findFirst().orElse(null);
     }
 
     public List<Book> gets(@NonNull Book where,
-                           @NonNull Integer page,
+                           @NonNull Long offset,
                            @NonNull Integer limits) {
-        return gets(where, page, limits, false);
+        return gets(where, offset, limits, false);
     }
 
     public List<Book> gets(@NonNull Book where,
-                           @NonNull Integer page,
+                           @NonNull Long offset,
                            @NonNull Integer limits,
                            boolean force) {
-        int offset = (page - 1) * limits;
         return bookMapper.select(where, offset, limits).stream()
                 .filter(forceFilter.apply(force))
                 .collect(Collectors.toList());
     }
 
     public List<Book> search(@NonNull Book book,
-                             @NonNull Integer page,
+                             @NonNull Long offset,
                              @NonNull Integer limits) {
-        return search(book, page, limits, false);
+        return search(book, offset, limits, false);
     }
 
     public List<Book> search(@NonNull Book book,
-                             @NonNull Integer page,
+                             @NonNull Long offset,
                              @NonNull Integer limits,
                              boolean force) {
-        Integer offset = (page - 1) * limits;
         return bookMapper.search(book, offset, limits).stream()
                 .filter(forceFilter.apply(force))
                 .collect(Collectors.toList());

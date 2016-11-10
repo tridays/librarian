@@ -7,7 +7,7 @@ import java.util.*;
 import lombok.Data;
 import xp.librarian.model.dto.Book;
 import xp.librarian.model.dto.BookTrace;
-import xp.librarian.model.dto.Lend;
+import xp.librarian.model.dto.Loan;
 import xp.librarian.model.dto.User;
 
 /**
@@ -18,7 +18,7 @@ public class BookTraceVM implements Serializable {
 
     private static final long serialVersionUID = -7116954866052993964L;
 
-    private Integer id;
+    private Long id;
 
     private String isbn;
 
@@ -28,9 +28,9 @@ public class BookTraceVM implements Serializable {
 
     private String location;
 
-    private Integer lendId;
+    private Long loanId;
 
-    private LendVM lend;
+    private LoanVM loan;
 
     private Long createTime;
 
@@ -40,7 +40,7 @@ public class BookTraceVM implements Serializable {
             this.isbn = trace.getIsbn();
             this.status = trace.getStatus();
             this.location = trace.getLocation();
-            this.lendId = trace.getLendId();
+            this.loanId = trace.getLoanId();
             this.createTime = Optional.ofNullable(trace.getCreateTime()).map(Instant::toEpochMilli).orElse(null);
         }
         return this;
@@ -53,9 +53,9 @@ public class BookTraceVM implements Serializable {
         return this;
     }
 
-    public BookTraceVM withLend(Lend lend, User user) {
-        if (lend != null) {
-            this.lend = new LendVM().withLend(lend).withUser(user);
+    public BookTraceVM withLend(Loan loan, User user) {
+        if (loan != null) {
+            this.loan = new LoanVM().withLoan(loan).withUser(user);
         }
         return this;
     }

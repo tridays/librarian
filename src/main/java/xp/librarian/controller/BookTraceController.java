@@ -42,7 +42,7 @@ public class BookTraceController extends BaseController {
             response = BookTraceVM.class
     )
     @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/{traceId}/")
-    public Object getTrace(@PathVariable String isbn, @PathVariable Integer traceId) {
+    public Object getTrace(@PathVariable String isbn, @PathVariable Long traceId) {
         return renderForEntity(traceService.getTrace(isbn, traceId));
     }
 

@@ -15,16 +15,15 @@ public class AccountContext implements Serializable {
 
     private static final long serialVersionUID = 25302623067800609L;
 
-    private Integer id;
+    private Long id;
 
     private Set<Role> roles;
 
     private User.Status status;
 
     public User toDTO() {
-        User user = new User();
-        user.setId(id);
-        return user;
+        return new User()
+                .setId(id);
     }
 
     public static AccountContext fromDTO(User user) {

@@ -19,7 +19,7 @@ public interface UserMapper {
                @Param("set") User set);
 
     List<User> select(@Param("where") User where,
-                      @Param("offset") Integer offset,
+                      @Param("offset") Long offset,
                       @Param("limits") Integer limits);
 
 }

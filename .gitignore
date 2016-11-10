@@ -126,3 +126,5 @@ hs_err_pid*
 
 #Customized
 /uploads/
+application-production.yaml
+application-test.yaml

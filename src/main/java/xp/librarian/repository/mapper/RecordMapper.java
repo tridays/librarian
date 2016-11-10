@@ -16,7 +16,7 @@ public interface RecordMapper {
     int insert(Record record);
 
     List<Record> select(@Param("where") Record where,
-                        @Param("offset") Integer offset,
+                        @Param("offset") Long offset,
                         @Param("limits") Integer limits);
 
 }

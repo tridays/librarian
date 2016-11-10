@@ -8,7 +8,7 @@
             `password`,
             `status`,
             `name`,
-            `avatarUrl`,
+            `avatarPath`,
             `age`,
             `major`,
             `phone`,
@@ -20,7 +20,7 @@
             MD5(#{password}),
             #{status},
             #{name},
-            #{avatarUrl},
+            #{avatarPath},
             #{age},
             #{major},
             #{phone},
@@ -45,8 +45,8 @@
             <if test="set.name != null">
                 `name`=#{set.name},
             </if>
-            <if test="set.avatarUrl != null">
-                `avatarUrl`=#{set.avatarUrl},
+            <if test="set.avatarPath != null">
+                `avatarPath`=#{set.avatarPath},
             </if>
             <if test="set.age != null">
                 `age`=#{set.age},

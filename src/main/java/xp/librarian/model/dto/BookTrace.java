@@ -18,9 +18,9 @@ public class BookTrace implements Serializable {
 
     private static final long serialVersionUID = -7884633389893650476L;
 
-    public Integer id;
+    private Long id;
 
-    public String isbn;
+    private String isbn;
 
     public enum Status {
         NORMAL,     // 在架上
@@ -30,13 +30,15 @@ public class BookTrace implements Serializable {
         ;
     }
 
-    public Status status;
+    private Status status;
 
-    public String location;
+    private String location;
 
-    public Integer lendId;
+    private Long loanId;
 
-    public Instant createTime;
+    private Instant createTime;
+
+    private transient Instant updateTime;
 
     @Override
     public boolean equals(Object object) {

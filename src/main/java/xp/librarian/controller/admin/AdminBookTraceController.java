@@ -44,7 +44,7 @@ public class AdminBookTraceController extends BaseController {
     )
     @PostMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/{traceId}/update")
     public Object updateTrace(@PathVariable String isbn,
-                              @PathVariable Integer traceId,
+                              @PathVariable Long traceId,
                               BookTraceUpdateForm form) {
         form.setIsbn(isbn);
         form.setTraceId(traceId);
@@ -58,7 +58,7 @@ public class AdminBookTraceController extends BaseController {
     )
     @PostMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/{traceId}/delete")
     public Object deleteTrace(@PathVariable String isbn,
-                              @PathVariable Integer traceId) {
+                              @PathVariable Long traceId) {
         traceService.deleteTrace(isbn, traceId);
         return renderForAction(true);
     }
@@ -82,7 +82,7 @@ public class AdminBookTraceController extends BaseController {
     )
     @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/{traceId}/")
     public Object getTrace(@PathVariable String isbn,
-                           @PathVariable Integer traceId) {
+                           @PathVariable Long traceId) {
         return renderForEntity(traceService.getTrace(isbn, traceId));
     }
 

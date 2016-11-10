@@ -13,12 +13,12 @@ public interface BookTraceDao {
 
     int update(BookTrace where, BookTrace set);
 
-    BookTrace get(Integer traceId);
+    BookTrace get(Long traceId);
 
-    BookTrace get(Integer traceId, boolean force);
+    BookTrace get(Long traceId, boolean force);
 
-    List<BookTrace> gets(BookTrace where, Integer page, Integer limits);
+    List<BookTrace> gets(BookTrace where, Long offset, Integer limits);
 
-    List<BookTrace> gets(BookTrace where, Integer page, Integer limits, boolean force);
+    List<BookTrace> gets(BookTrace where, Long offset, Integer limits, boolean force);
 
 }

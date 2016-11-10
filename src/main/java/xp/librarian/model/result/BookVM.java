@@ -6,6 +6,8 @@ import java.util.*;
 
 import lombok.Data;
 import xp.librarian.model.dto.Book;
+import xp.librarian.utils.RegexUtils;
+import xp.librarian.utils.UploadUtils;
 
 /**
  * @author xp
@@ -19,11 +21,17 @@ public class BookVM implements Serializable {
 
     private String name;
 
+    private String publisher;
+
+    private List<String> authors;
+
+    private String imageUrl;
+
     private String desc;
 
-    private Integer total;
+    private Long total;
 
-    private Integer margin;
+    private Long margin;
 
     private Long createTime;
 
@@ -31,11 +39,18 @@ public class BookVM implements Serializable {
         if (book != null) {
             this.isbn = book.getIsbn();
             this.name = book.getName();
+            this.publisher = book.getPublisher();
+            this.authors = RegexUtils.extractAuthors(book.getAuthors());
+            this.imageUrl = UploadUtils.makeUrl(book.getImagePath());
             this.desc = book.getDesc();
-            this.total = book.getTotal();
-            this.margin = book.getMargin();
             this.createTime = Optional.ofNullable(book.getCreateTime()).map(Instant::toEpochMilli).orElse(null);
         }
+        return this;
+    }
+
+    public BookVM withBookCount(Long total, Long margin) {
+        this.total = total;
+        this.margin = margin;
         return this;
     }
 

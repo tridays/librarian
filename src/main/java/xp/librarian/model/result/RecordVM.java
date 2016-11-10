@@ -16,11 +16,11 @@ public class RecordVM implements Serializable {
 
     private static final long serialVersionUID = 4229075844008454538L;
 
-    private Integer id;
+    private Long id;
 
-    private Integer userId;
+    private Long userId;
 
-    private Integer traceId;
+    private Long traceId;
 
     private Action action;
 

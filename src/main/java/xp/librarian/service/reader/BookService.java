@@ -3,7 +3,6 @@ package xp.librarian.service.reader;
 import java.util.*;
 import java.util.stream.*;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
@@ -13,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.NonNull;
 import xp.librarian.model.context.ResourceNotFoundException;
-import xp.librarian.model.context.ValidationException;
 import xp.librarian.model.dto.Book;
 import xp.librarian.model.form.BookSearchForm;
 import xp.librarian.model.form.PagingForm;
-import xp.librarian.model.form.UserUpdateForm;
 import xp.librarian.model.result.BookVM;
 import xp.librarian.repository.BookDao;
 
@@ -40,15 +37,13 @@ public class BookService {
 
     public List<BookVM> search(@Valid BookSearchForm form,
                                @Valid PagingForm paging) {
-        Set<ConstraintViolation<BookSearchForm>> vSet = validator.validate(form);
-        if (!vSet.isEmpty()) {
-            throw new ValidationException(vSet);
-        }
+        form.validate(validator);
+
         Book where = new Book()
                 .setIsbn(form.getIsbn())
                 .setName(form.getName())
                 .setStatus(Book.Status.NORMAL);
-        List<Book> books = bookDao.search(where, paging.getPage(), paging.getLimits(), true);
+        List<Book> books = bookDao.search(where, paging.getOffset(), paging.getLimits());
         return books.stream()
                 .filter(e -> e != null)
                 .distinct()
@@ -57,7 +52,7 @@ public class BookService {
     }
 
     public BookVM getBook(@NonNull String isbn) {
-        Book book = bookDao.get(isbn, true);
+        Book book = bookDao.get(isbn);
         if (book == null) {
             throw new ResourceNotFoundException("book not found.");
         }

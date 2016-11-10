@@ -3,7 +3,6 @@ package xp.librarian.test.mybatis;
 import java.sql.*;
 import java.time.*;
 import java.time.temporal.*;
-import java.util.*;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
@@ -55,8 +54,8 @@ public class TimeTest {
 
     @Test
     public void instant() {
-        User where = new User().setId(1);
-        User user = userMapper.select(where, 0, 1).stream().findFirst().orElse(null);
+        User where = new User().setId(1L);
+        User user = userMapper.select(where, 0L, 1).stream().findFirst().orElse(null);
         if (user != null) {
             Instant instant = user.getCreateTime();
             LOG.info(String.format("%s %d", instant.toString(), instant.toEpochMilli()));

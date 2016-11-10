@@ -30,13 +30,17 @@ public class Book implements Serializable {
 
     private Status status;
 
+    private String publisher;
+
+    private String authors;
+
+    private String imagePath;
+
     private String desc;
 
-    private transient Integer total;
-
-    private transient Integer margin;
-
     private Instant createTime;
+
+    private transient Instant updateTime;
 
     @Override
     public boolean equals(Object object) {

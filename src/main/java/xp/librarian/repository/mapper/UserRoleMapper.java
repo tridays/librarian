@@ -15,6 +15,6 @@ public interface UserRoleMapper {
 
     int delete(UserRole role);
 
-    List<UserRole> select(@Param("userId") Integer userId);
+    List<UserRole> select(@Param("userId") Long userId);
 
 }

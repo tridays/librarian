@@ -17,12 +17,12 @@ public interface BookDao {
 
     Book get(String isbn, boolean force);
 
-    List<Book> gets(Book where, Integer page, Integer limits);
+    List<Book> gets(Book where, Long offset, Integer limits);
 
-    List<Book> gets(Book where, Integer page, Integer limits, boolean force);
+    List<Book> gets(Book where, Long offset, Integer limits, boolean force);
 
-    List<Book> search(Book book, Integer page, Integer limits);
+    List<Book> search(Book book, Long offset, Integer limits);
 
-    List<Book> search(Book book, Integer page, Integer limits, boolean force);
+    List<Book> search(Book book, Long offset, Integer limits, boolean force);
 
 }

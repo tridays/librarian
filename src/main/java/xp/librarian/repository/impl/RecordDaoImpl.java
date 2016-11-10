@@ -24,9 +24,8 @@ public class RecordDaoImpl implements RecordDao {
     }
 
     public List<Record> select(@NonNull Record where,
-                               @NonNull Integer page,
+                               @NonNull Long offset,
                                @NonNull Integer limits) {
-        Integer offset = (page - 1) * limits;
         return recordMapper.select(where, offset, limits);
     }
 

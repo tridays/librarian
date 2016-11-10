@@ -1,12 +1,17 @@
 package xp.librarian.model.form;
 
 import java.io.*;
+import java.util.*;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import xp.librarian.model.context.ValidationException;
 import xp.librarian.model.dto.BookTrace;
 
 /**
@@ -26,7 +31,15 @@ public class BookTraceAddForm implements Serializable {
     @Length(max = 63325)
     private String location;
 
-    public BookTrace toDTO() {
+    public boolean validate(Validator validator) {
+        Set<ConstraintViolation<BookTraceAddForm>> vSet = validator.validate(this);
+        if (!vSet.isEmpty()) {
+            throw new ValidationException(vSet);
+        }
+        return true;
+    }
+
+    public BookTrace forSet() {
         return new BookTrace()
                 .setIsbn(isbn)
                 .setStatus(status)

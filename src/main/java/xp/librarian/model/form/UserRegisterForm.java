@@ -1,7 +1,10 @@
 package xp.librarian.model.form;
 
 import java.io.*;
+import java.util.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import xp.librarian.model.context.ValidationException;
 import xp.librarian.model.dto.User;
 
 /**
@@ -53,7 +57,15 @@ public class UserRegisterForm implements Serializable {
     @Length(max = 65535)
     private String remarks;
 
-    public User toDTO() {
+    public boolean validate(Validator validator) {
+        Set<ConstraintViolation<UserRegisterForm>> vSet = validator.validate(this);
+        if (!vSet.isEmpty()) {
+            throw new ValidationException(vSet);
+        }
+        return true;
+    }
+
+    public User forSet() {
         return new User()
                 .setUsername(username)
                 .setPassword(password)

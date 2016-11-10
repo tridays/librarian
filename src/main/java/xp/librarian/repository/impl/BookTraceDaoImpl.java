@@ -33,30 +33,29 @@ public class BookTraceDaoImpl implements BookTraceDao {
         return traceMapper.update(where, set);
     }
 
-    public BookTrace get(@NonNull Integer traceId) {
+    public BookTrace get(@NonNull Long traceId) {
         return get(traceId, false);
     }
 
-    public BookTrace get(@NonNull Integer traceId,
+    public BookTrace get(@NonNull Long traceId,
                          boolean force) {
         BookTrace where = new BookTrace();
         where.setId(traceId);
-        return gets(where, 1, 1, force).stream()
+        return gets(where, 0L, 1, force).stream()
                 .findFirst().orElse(null);
 
     }
 
     public List<BookTrace> gets(@NonNull BookTrace where,
-                                @NonNull Integer page,
+                                @NonNull Long offset,
                                 @NonNull Integer limits) {
-        return gets(where, page, limits, false);
+        return gets(where, offset, limits, false);
     }
 
     public List<BookTrace> gets(@NonNull BookTrace where,
-                                @NonNull Integer page,
+                                @NonNull Long offset,
                                 @NonNull Integer limits,
                                 boolean force) {
-        Integer offset = (page - 1) * limits;
         return traceMapper.select(where, offset, limits).stream()
                 .filter(forceFilter.apply(force))
                 .collect(Collectors.toList());

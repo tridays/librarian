@@ -1,14 +1,18 @@
 package xp.librarian.model.form;
 
 import java.io.*;
+import java.util.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import xp.librarian.model.dto.Reservation;
+import xp.librarian.model.context.ValidationException;
+import xp.librarian.model.dto.Loan;
 
 /**
  * @author xp
@@ -24,10 +28,18 @@ public class ReserveBookForm implements Serializable {
 
     @ApiModelProperty(hidden = true)
     @NotNull
-    private Integer traceId;
+    private Long traceId;
 
-    public Reservation toDTO() {
-        return new Reservation()
+    public boolean validate(Validator validator) {
+        Set<ConstraintViolation<ReserveBookForm>> vSet = validator.validate(this);
+        if (!vSet.isEmpty()) {
+            throw new ValidationException(vSet);
+        }
+        return true;
+    }
+
+    public Loan forSet() {
+        return new Loan()
                 .setTraceId(traceId);
     }
 

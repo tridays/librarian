@@ -25,8 +25,8 @@
             <if test="set.location != null">
                 `location`=#{set.location},
             </if>
-            <if test="set.lendId != null">
-                `lendId`=#{set.lendId},
+            <if test="set.loanId != null">
+                `loanId`=#{set.loanId},
             </if>
         </set>
         <where>
@@ -39,8 +39,8 @@
             <if test="where.status != null">
                 AND `status`=#{where.status}
             </if>
-            <if test="where.lendId != null">
-                AND `lendId`=#{where.lendId}
+            <if test="where.loanId != null">
+                AND `loanId`=#{where.loanId}
             </if>
         </where>
         LIMIT 1
@@ -59,8 +59,8 @@
             <if test="where.status != null">
                 AND `status`=#{where.status}
             </if>
-            <if test="where.lendId != null">
-                AND `lendId`=#{where.lendId}
+            <if test="where.loanId != null">
+                AND `loanId`=#{where.loanId}
             </if>
         </where>
         ORDER BY `createTime` ASC

@@ -7,12 +7,18 @@
             `isbn`,
             `name`,
             `status`,
+            `publisher`,
+            `authors`,
+            `imagePath`,
             `desc`,
             `createTime`
         ) VALUES (
             #{isbn},
             #{name},
             #{status},
+            #{publisher},
+            #{authors},
+            #{imagePath},
             #{desc},
             #{createTime}
         );
@@ -27,6 +33,15 @@
             <if test="set.status != null">
                 `status`=#{set.status},
             </if>
+            <if test="set.publisher != null">
+                `publisher`=#{set.publisher},
+            </if>
+            <if test="set.authors != null">
+                `authors`=#{set.authors},
+            </if>
+            <if test="set.imagePath != null">
+                `imagePath`=#{set.imagePath},
+            </if>
             <if test="set.desc != null">
                 `desc`=#{set.desc},
             </if>
@@ -34,9 +49,6 @@
         <where>
             <if test="where.isbn != null">
                 AND `isbn`=#{where.isbn}
-            </if>
-            <if test="where.name != null">
-                AND `name`=#{where.name}
             </if>
             <if test="where.status != null">
                 AND `status`=#{where.status}
@@ -51,9 +63,6 @@
         <where>
             <if test="where.isbn != null">
                 AND `isbn`=#{where.isbn}
-            </if>
-            <if test="where.name != null">
-                AND `name`=#{where.name}
             </if>
             <if test="where.status != null">
                 AND `status`=#{where.status}

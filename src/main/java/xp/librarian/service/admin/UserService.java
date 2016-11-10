@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public List<UserProfileVM> getUsers(@Valid PagingForm paging) {
-        List<User> users = userDao.gets(new User(), paging.getPage(), paging.getLimits(), true);
+        List<User> users = userDao.gets(new User(), paging.getOffset(), paging.getLimits(), true);
         return users.stream()
                 .filter(e -> e != null)
                 .distinct()
@@ -44,7 +44,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserProfileVM getUser(@NonNull Integer userId) {
+    public UserProfileVM getUser(@NonNull Long userId) {
         User user = userDao.get(userId, true);
         if (user == null) {
             throw new ResourceNotFoundException("user not found.");
@@ -52,7 +52,7 @@ public class UserService {
         return buildUserProfileVM(user);
     }
 
-    private void setStatus(Integer userId,User.Status oldValue, User.Status newValue) {
+    private void setStatus(Long userId, User.Status oldValue, User.Status newValue) {
         User where = new User()
                 .setId(userId)
                 .setStatus(oldValue);
@@ -63,19 +63,19 @@ public class UserService {
         }
     }
 
-    private void setStatus(Integer userId, User.Status newValue) {
+    private void setStatus(Long userId, User.Status newValue) {
         setStatus(userId, null, newValue);
     }
 
-    public void freeze(@NonNull Integer userId) {
+    public void freeze(@NonNull Long userId) {
         setStatus(userId, User.Status.NORMAL, User.Status.FROZEN);
     }
 
-    public void unfreeze(@NonNull Integer userId) {
+    public void unfreeze(@NonNull Long userId) {
         setStatus(userId, User.Status.FROZEN, User.Status.NORMAL);
     }
 
-    public void delete(@NonNull Integer userId) {
+    public void delete(@NonNull Long userId) {
         setStatus(userId, User.Status.DELETED);
     }
 

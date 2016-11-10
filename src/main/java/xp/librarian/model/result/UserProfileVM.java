@@ -7,6 +7,7 @@ import java.util.*;
 import lombok.Data;
 import xp.librarian.model.dto.Role;
 import xp.librarian.model.dto.User;
+import xp.librarian.utils.UploadUtils;
 
 /**
  * @author xp
@@ -16,7 +17,7 @@ public class UserProfileVM implements Serializable {
 
     private static final long serialVersionUID = -4849194255600852709L;
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
@@ -44,7 +45,7 @@ public class UserProfileVM implements Serializable {
             this.username = user.getUsername();
             this.roles = Optional.ofNullable(user.getRoles()).map(e -> e.toArray(new Role[0])).orElse(null);
             this.name = user.getName();
-            this.avatarUrl = user.getAvatarUrl();
+            this.avatarUrl = UploadUtils.makeUrl(user.getAvatarPath());
             this.age = user.getAge();
             this.major = user.getMajor();
             this.phone = user.getPhone();

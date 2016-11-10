@@ -3,15 +3,18 @@ package xp.librarian.model.form;
 import java.io.*;
 import java.time.*;
 import java.time.temporal.*;
+import java.util.*;
 
-import javax.validation.constraints.Future;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import xp.librarian.model.dto.Lend;
+import xp.librarian.model.context.ValidationException;
+import xp.librarian.model.dto.Loan;
 import xp.librarian.model.validator.MyFuture;
 
 /**
@@ -28,20 +31,33 @@ public class LendBookForm implements Serializable {
 
     @ApiModelProperty(hidden = true)
     @NotNull
-    private Integer traceId;
+    private Long traceId;
 
     @MyFuture
     private Long appointedTime;
 
-    public Lend toDTO() {
-        Lend lend = new Lend();
-        lend.setTraceId(traceId);
-        if (appointedTime != null) {
-            lend.setAppointedTime(Instant.ofEpochMilli(appointedTime));
-        } else {
-            lend.setAppointedTime(Instant.now().plus(30L, ChronoUnit.DAYS));
+    public boolean validate(Validator validator) {
+        Set<ConstraintViolation<LendBookForm>> vSet = validator.validate(this);
+        if (!vSet.isEmpty()) {
+            throw new ValidationException(vSet);
         }
-        return lend;
+        return true;
+    }
+
+    public Loan forSet() {
+        Loan loan = new Loan();
+        loan.setTraceId(traceId);
+
+        Instant now = Instant.now();
+        Instant appointed;
+        if (appointedTime != null) {
+            appointed = Instant.ofEpochMilli(appointedTime);
+        } else {
+            appointed = now.plus(30L, ChronoUnit.DAYS);
+        }
+        loan.setAppointedDuration((int) ((appointed.toEpochMilli() - now.toEpochMilli()) / 1000));
+        loan.setAppointedTime(appointed);
+        return loan;
     }
 
 }

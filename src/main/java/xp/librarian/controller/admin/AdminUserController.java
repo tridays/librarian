@@ -31,24 +31,24 @@ public class AdminUserController extends BaseController {
     }
 
     @GetMapping("users/{userId}/")
-    public Object getUser(@PathVariable Integer userId) {
+    public Object getUser(@PathVariable Long userId) {
         return renderForEntity(userService.getUser(userId));
     }
 
     @PostMapping("users/{userId}/freeze")
-    public Object freezeUser(@PathVariable Integer userId) {
+    public Object freezeUser(@PathVariable Long userId) {
         userService.freeze(userId);
         return renderForAction(true);
     }
 
     @PostMapping("users/{userId}/unfreeze")
-    public Object unfreezeUser(@PathVariable Integer userId) {
+    public Object unfreezeUser(@PathVariable Long userId) {
         userService.unfreeze(userId);
         return renderForAction(true);
     }
 
     @PostMapping("users/{userId}/delete")
-    public Object deleteUser(@PathVariable Integer userId) {
+    public Object deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
         return renderForAction(true);
     }

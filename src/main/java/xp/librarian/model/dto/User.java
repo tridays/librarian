@@ -18,7 +18,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -3210175692337394666L;
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
@@ -37,7 +37,7 @@ public class User implements Serializable {
 
     private String name;
 
-    private String avatarUrl;
+    private String avatarPath;
 
     private Integer age;
 

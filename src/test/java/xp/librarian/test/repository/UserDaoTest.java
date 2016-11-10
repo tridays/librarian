@@ -40,7 +40,7 @@ public class UserDaoTest {
         User where = new User().setId(insertUser.getId());
         Assert.assertEquals(insertUser, userDao.get(insertUser.getId()));
         Assert.assertEquals(insertUser, userDao.get(where));
-        Assert.assertEquals(Collections.singletonList(insertUser), userDao.gets(where, 1, 1));
+        Assert.assertEquals(Collections.singletonList(insertUser), userDao.gets(where, 0L, 1));
 
         User set = new User()
                 .setStatus(User.Status.DELETED);
@@ -49,7 +49,7 @@ public class UserDaoTest {
         Assert.assertNull(userDao.get(where));
         Assert.assertEquals(insertUser, userDao.get(insertUser.getId(), true));
         Assert.assertEquals(insertUser, userDao.get(where, true));
-        Assert.assertEquals(Collections.singletonList(insertUser), userDao.gets(where, 1, 1, true));
+        Assert.assertEquals(Collections.singletonList(insertUser), userDao.gets(where, 0L, 1, true));
     }
 
     @Test(expected = DataIntegrityViolationException.class)

@@ -40,11 +40,11 @@ public class UserDaoImpl implements UserDao {
         return userMapper.update(where, set);
     }
 
-    public User get(@NonNull Integer userId) {
+    public User get(@NonNull Long userId) {
         return get(userId, false);
     }
 
-    public User get(@NonNull Integer userId,
+    public User get(@NonNull Long userId,
                     boolean force) {
         User where = new User();
         where.setId(userId);
@@ -57,21 +57,20 @@ public class UserDaoImpl implements UserDao {
 
     public User get(@NonNull User where,
                     boolean force) {
-        return gets(where, 1, 1, force).stream()
+        return gets(where, 0L, 1, force).stream()
                 .findFirst().orElse(null);
     }
 
     public List<User> gets(@NonNull User where,
-                           @NonNull Integer page,
+                           @NonNull Long offset,
                            @NonNull Integer limits) {
-        return gets(where, page, limits, false);
+        return gets(where, offset, limits, false);
     }
 
     public List<User> gets(@NonNull User where,
-                           @NonNull Integer page,
+                           @NonNull Long offset,
                            @NonNull Integer limits,
                            boolean force) {
-        int offset = (page - 1) * limits;
         return userMapper.select(where, offset, limits).stream()
                 .filter(forceFilter.apply(force))
                 .map(e -> {
@@ -87,7 +86,7 @@ public class UserDaoImpl implements UserDao {
         UserRole userRole = new UserRole()
                 .setUserId(user.getId())
                 .setRole(role)
-                .setCreateTime(Date.from(TimeUtils.now()));
+                .setCreateTime(TimeUtils.now());
         int result = roleMapper.insert(userRole);
         if (result > 0) {
             user.getRoles().add(role);

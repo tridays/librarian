@@ -3,7 +3,7 @@ spring:
     banner-mode: 'OFF'
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # schema: migration/init.sql
+    schema: migration/init.sql
     sql-script-encoding: UTF-8
     dbcp2:
       initial-size: 4
@@ -34,6 +34,16 @@ spring:
       force: true
       force-request: true
       force-response: true
+  thymeleaf:
+    enabled: true
+    cache: false
+    encoding: UTF-8
+    content-type: text/html
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+    check-template: false
+
 mybatis:
   mapper-locations: classpath:xp.librarian.repository.mapper/*.xml
   type-aliases-package: xp.librarian.model.dto

@@ -19,7 +19,7 @@ public interface BookTraceMapper {
                @Param("set") BookTrace set);
 
     List<BookTrace> select(@Param("where") BookTrace where,
-                           @Param("offset") Integer offset,
+                           @Param("offset") Long offset,
                            @Param("limits") Integer limits);
 
 }

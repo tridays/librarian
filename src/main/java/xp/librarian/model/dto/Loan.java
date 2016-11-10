@@ -14,45 +14,55 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Lend implements Serializable {
+public class Loan implements Serializable {
 
     private static final long serialVersionUID = 7741202507373698255L;
 
-    public Integer id;
+    private Long id;
 
-    public Integer userId;
+    private Long userId;
 
-    public Integer traceId;
+    private Long traceId;
 
     public enum
     Status {
         APPLYING,   // 申请借书中
-        CANCELED,   // 申请已过期
+        RESERVING,  // 预订中
+        CANCELED,   // 已取消
         EXPIRED,    // 申请已过期
         REJECTED,   // 申请被拒绝
         ACTIVE,     // 已借到
-        LATE,       // 已违约
         RETURNED,   // 已归还
         DISABLED,   // 已失效（无法归还）
         ;
     }
 
-    public Status status;
+    private Status status;
 
-    public Integer renew;
+    private Boolean isReservation;
 
-    public Instant applyingTime;
+    private Boolean isLate;
 
-    public Instant appointedTime;
+    private Integer renewCount;
 
-    public Instant expiredTime;
+    private Integer appointedDuration;
+
+    private Instant expiredTime;
+
+    private Instant activeTime;
+
+    private Instant appointedTime;
+
+    private Instant createTime;
+
+    private transient Instant updateTime;
 
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
-        if (!(object instanceof Lend)) return false;
-        Lend lend = (Lend) object;
-        return Objects.equals(id, lend.id);
+        if (!(object instanceof Loan)) return false;
+        Loan loan = (Loan) object;
+        return Objects.equals(id, loan.id);
     }
 
     @Override

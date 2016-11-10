@@ -18,122 +18,122 @@ public class Record implements Serializable {
 
     private static final long serialVersionUID = 8338137113945623443L;
 
-    public Integer id;
+    private Long id;
 
-    public Integer userId;
+    private Long userId;
 
-    public Integer traceId;
+    private Long traceId;
 
-    public Action action;
+    private Action action;
 
-    public Object payload;
+    private Object payload;
 
-    public Instant time;
+    private Instant time;
 
-    public static Record apply(Lend lend) {
+    public static Record apply(Loan loan) {
         Record record = new Record();
         record.setAction(Action.APPLY);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record cancelApplication(Lend lend) {
+    public static Record cancelApplication(Loan loan) {
         Record record = new Record();
         record.setAction(Action.CANCEL_APPLICATION);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record renewLend(Lend lend) {
+    public static Record renewLend(Loan loan) {
         Record record = new Record();
         record.setAction(Action.RENEW);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record reserve(Reservation reservation) {
+    public static Record reserve(Loan loan) {
         Record record = new Record();
         record.setAction(Action.RESERVE);
-        record.setUserId(reservation.getUserId());
-        record.setTraceId(reservation.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record cancelReservation(Reservation reservation) {
+    public static Record cancelReservation(Loan loan) {
         Record record = new Record();
         record.setAction(Action.CANCEL_RESERVATION);
-        record.setUserId(reservation.getUserId());
-        record.setTraceId(reservation.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record accept(Lend lend) {
+    public static Record accept(Loan loan) {
         Record record = new Record();
         record.setAction(Action.ACCEPT);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record reject(Lend lend) {
+    public static Record reject(Loan loan) {
         Record record = new Record();
         record.setAction(Action.REJECT);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record confirmReturned(Lend lend) {
+    public static Record confirmReturned(Loan loan) {
         Record record = new Record();
         record.setAction(Action.CONFIRM_RETURNED);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record confirmDisabled(Lend lend) {
+    public static Record confirmDisabled(Loan loan) {
         Record record = new Record();
         record.setAction(Action.CONFIRM_DISABLED);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record expired(Lend lend) {
+    public static Record expired(Loan loan) {
         Record record = new Record();
         record.setAction(Action.EXPIRED);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record reserved(Reservation reservation) {
+    public static Record reserved(Loan loan) {
         Record record = new Record();
         record.setAction(Action.RESERVED);
-        record.setUserId(reservation.getUserId());
-        record.setTraceId(reservation.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }
 
-    public static Record late(Lend lend) {
+    public static Record late(Loan loan) {
         Record record = new Record();
         record.setAction(Action.LATE);
-        record.setUserId(lend.getUserId());
-        record.setTraceId(lend.getTraceId());
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
         record.setTime(Instant.now());
         return record;
     }

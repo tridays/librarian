@@ -11,6 +11,6 @@ public interface RecordDao {
 
     int add(Record record);
 
-    List<Record> select(Record where, Integer page, Integer limits);
+    List<Record> select(Record where, Long offset, Integer limits);
 
 }

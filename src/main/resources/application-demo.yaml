@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/librarian?useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&jdbcCompliantTruncation=false
+    username: root
+    password: root
+  mail:
+    protocol: smtp
+    host:
+    port: 465
+    username:
+    password:
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
+      mail.smtp.socketFactory.port: 465
+      mail.smtp.socketFactory.fallback: false
+
+logging:
+  level:
+    .: WARN
+    xp.librarian:
+      .: INFO
+      repository:
+        mapper: INFO

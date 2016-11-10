@@ -3,29 +3,27 @@ package xp.librarian.service.admin;
 import java.util.*;
 import java.util.stream.*;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.ValidationUtils;
 
 import lombok.NonNull;
 import xp.librarian.model.context.BusinessException;
 import xp.librarian.model.context.ErrorCode;
 import xp.librarian.model.context.ResourceNotFoundException;
-import xp.librarian.model.context.ValidationException;
 import xp.librarian.model.dto.Book;
 import xp.librarian.model.form.BookAddForm;
 import xp.librarian.model.form.BookUpdateForm;
 import xp.librarian.model.form.PagingForm;
-import xp.librarian.model.form.UserUpdateForm;
 import xp.librarian.model.result.BookVM;
 import xp.librarian.repository.BookDao;
 import xp.librarian.utils.TimeUtils;
+import xp.librarian.utils.UploadUtils;
 
 /**
  * @author xp
@@ -45,26 +43,28 @@ public class BookService {
     }
 
     public BookVM addBook(@Valid BookAddForm form) {
-        Set<ConstraintViolation<BookAddForm>> vSet = validator.validate(form);
-        if (!vSet.isEmpty()) {
-            throw new ValidationException(vSet);
+        form.validate(validator);
+
+        Book existBook = bookDao.get(form.getIsbn(), true);
+        if (existBook != null) {
+            throw new BusinessException(ErrorCode.ADMIN_BOOK_EXISTS);
         }
-        Book book = form.toDTO();
-        if (book.getStatus() == null) {
-            book.setStatus(Book.Status.NORMAL);
+        Book set = form.forSet();
+        set.setImagePath(StringUtils.isEmpty(form.getImageUrl()) ?
+                UploadUtils.upload(form.getImage()) : UploadUtils.fetch(form.getImageUrl()));
+        if (set.getStatus() == null) {
+            set.setStatus(Book.Status.NORMAL);
         }
-        book.setCreateTime(TimeUtils.now());
-        if (0 == bookDao.add(book)) {
+        set.setCreateTime(TimeUtils.now());
+        if (0 == bookDao.add(set)) {
             throw new PersistenceException("book insert failed.");
         }
-        return buildBookVM(book);
+        return buildBookVM(set);
     }
 
     public BookVM updateBook(@Valid BookUpdateForm form) {
-        Set<ConstraintViolation<BookUpdateForm>> vSet = validator.validate(form);
-        if (!vSet.isEmpty()) {
-            throw new ValidationException(vSet);
-        }
+        form.validate(validator);
+
         Book book = bookDao.get(form.getIsbn(), true);
         if (book == null) {
             throw new ResourceNotFoundException("book not found.");
@@ -72,7 +72,9 @@ public class BookService {
         Book where = new Book()
                 .setIsbn(book.getIsbn())
                 .setStatus(book.getStatus());
-        Book set = form.toDTO();
+        Book set = form.forSet();
+        set.setImagePath(StringUtils.isEmpty(form.getImageUrl()) ?
+                UploadUtils.upload(form.getImage()) : UploadUtils.fetch(form.getImageUrl()));
         if (0 == bookDao.update(where, set)) {
             throw new PersistenceException("book update failed.");
         }
@@ -95,11 +97,10 @@ public class BookService {
         if (0 == bookDao.update(where, set)) {
             throw new PersistenceException("book update failed.");
         }
-        //TODO DELETE all traces
     }
 
     public List<BookVM> getBooks(@Valid PagingForm paging) {
-        List<Book> books = bookDao.gets(new Book(), paging.getPage(), paging.getLimits(), true);
+        List<Book> books = bookDao.gets(new Book(), paging.getOffset(), paging.getLimits(), true);
         return books.stream()
                 .filter((e) -> e != null)
                 .distinct()

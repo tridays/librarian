@@ -1,6 +1,7 @@
 package xp.librarian.model.dto;
 
 import java.io.*;
+import java.time.*;
 import java.util.*;
 
 import lombok.Getter;
@@ -17,11 +18,11 @@ public class UserRole implements Serializable {
 
     private static final long serialVersionUID = -298349867748056048L;
 
-    public Integer userId;
+    private Long userId;
 
-    public Role role;
+    private Role role;
 
-    public Date createTime;
+    private Instant createTime;
 
     @Override
     public boolean equals(Object object) {

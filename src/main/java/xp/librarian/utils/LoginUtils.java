@@ -26,7 +26,7 @@ public class LoginUtils {
     @Data
     private static class Token {
 
-        private Integer userId;
+        private Long userId;
 
         private Long expiryTime;
 
@@ -68,7 +68,7 @@ public class LoginUtils {
         return AccountContext.fromDTO(user);
     }
 
-    public static boolean login(Integer userId) {
+    public static boolean login(Long userId) {
         Token token = new Token();
         token.userId = userId;
         token.expiryTime = System.currentTimeMillis() + COOKIE_LIFE_TIME_MS;

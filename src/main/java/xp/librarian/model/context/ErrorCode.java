@@ -6,19 +6,21 @@ import lombok.Getter;
  * @author xp
  */
 public enum ErrorCode {
-    USER_EXISTS("user.exists"),
-    USER_LOGIN_FAIL("user.login_fail"),
-    BOOK_TRACE_HAS_BEEN_LOCKED("book_trace.locked"),
-    BOOK_TRACE_STATUS_MISMATCH("book_trace.status_mismatch"),
-    LEND_STATUS_MISMATCH("lend.status_mismatch"),
-    LEND_RENEW_ONLY_ONCE_ALLOWED("lend.renew_only_once_allowed"),
-    RESERVATION_STATUS_MISMATCH("reservation.status_mismatch"),
-    RESERVATION_EXISTS("reservation.exists"),
+    ADMIN_BOOK_EXISTS("admin.book.exists"),
 
+    ADMIN_USER_STATUS_MISMATCH("admin.user.status_mismatch"),
     ADMIN_BOOK_STATUS_MISMATCH("admin.book.status_mismatch"),
     ADMIN_BOOK_TRACE_STATUS_MISMATCH("admin.book_trace.status_mismatch"),
-    ADMIN_LEND_STATUS_MISMATCH("admin.lend.status_mismatch"),
-    ADMIN_RESERVATION_STATUS_MISMATCH("admin.reservation.status_mismatch"),
+    ADMIN_LOAN_STATUS_MISMATCH("admin.loan.status_mismatch"),
+
+    USER_EXISTS("user.exists"),
+    USER_LOGIN_FAIL("user.login_fail"),
+
+    BOOK_TRACE_STATUS_MISMATCH("book_trace.status_mismatch"),
+    LOAN_STATUS_MISMATCH("loan.status_mismatch"),
+    LOAN_REACH_MAX_RENEW_COUNT("loan.reach_max_renew_count"),
+    LOAN_RESERVATION_EXISTS("loan.reservation_exists"),
+
     ;
 
     @Getter

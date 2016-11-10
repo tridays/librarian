@@ -19,13 +19,13 @@ public interface BookMapper {
                @Param("set") Book set);
 
     List<Book> select(@Param("where") Book where,
-                      @Param("offset") Integer offset,
+                      @Param("offset") Long offset,
                       @Param("limits") Integer limits);
 
     List<Book> selectIN(@Param("isbns") Collection<String> isbns);
 
     List<Book> search(@Param("where") Book where,
-                      @Param("offset") Integer offset,
+                      @Param("offset") Long offset,
                       @Param("limits") Integer limits);
 
 }
