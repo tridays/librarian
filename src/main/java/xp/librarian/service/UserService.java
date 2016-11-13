@@ -50,8 +50,9 @@ public class UserService {
         }
         User user = form.forSet()
                 .setId(MurmurHash3.x64_64(form.getUsername()))
-                .setAvatarPath(UploadUtils.upload(form.getAvatar()))
                 .setStatus(User.Status.NORMAL)
+                .setAvatarPath(UploadUtils.upload(form.getAvatar()))
+                .setLoanLimit(5)
                 .setCreateTime(TimeUtils.now());
         if (0 == userDao.add(user)) {
             throw new PersistenceException("user insert failed.");
@@ -88,7 +89,7 @@ public class UserService {
     public UserProfileVM setProfile(@NonNull AccountContext account, @Valid UserUpdateForm form) {
         form.validate(validator);
 
-        User where = account.toDTO();
+        User where = account.forWhere();
         User set = form.forSet()
                 .setAvatarPath(UploadUtils.upload(form.getAvatar()));
         if (0 == userDao.update(where, set)) {

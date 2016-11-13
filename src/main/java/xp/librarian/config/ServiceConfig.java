@@ -4,7 +4,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.hibernate.validator.internal.engine.ValidatorFactoryImpl;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.*;
 
@@ -14,7 +13,8 @@ import org.springframework.context.annotation.*;
 @Configuration
 @Import({
         RepositoryConfig.class,
-        ScheduleConfig.class
+        ScheduleConfig.class,
+        I18NConfig.class
 })
 @ComponentScan(basePackages = {"xp.librarian.service"})
 public class ServiceConfig {

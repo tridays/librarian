@@ -8,7 +8,6 @@ import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,7 +23,7 @@ public class BookTraceUpdateForm implements Serializable {
     private static final long serialVersionUID = 5069386085980515997L;
 
     @ApiModelProperty(hidden = true)
-    @NotBlank
+    @NotNull
     private String isbn;
 
     @ApiModelProperty(hidden = true)

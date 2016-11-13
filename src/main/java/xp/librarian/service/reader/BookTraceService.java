@@ -40,6 +40,16 @@ public class BookTraceService {
     @Autowired
     private LoanDao loanDao;
 
+    private Boolean checkReservable(BookTrace trace) {
+        if (trace.getStatus() != BookTrace.Status.BORROWED) {
+            return false;
+        }
+        Loan reservation = loanDao.get(new Loan()
+                .setTraceId(trace.getId())
+                .setStatus(Loan.Status.RESERVING));
+        return reservation == null;
+    }
+
     private BookTraceVM buildTraceVM(@NonNull BookTrace trace) {
         Book book = bookDao.get(trace.getIsbn());
         if (book == null) {
@@ -53,6 +63,7 @@ public class BookTraceService {
             vm.withLend(loan, Optional.ofNullable(loan.getUserId())
                     .map(userId -> userDao.get(userId)).orElse(null));
         }
+        vm.setIsReservable(checkReservable(trace));
         return vm;
     }
 

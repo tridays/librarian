@@ -37,6 +37,8 @@ public class UserProfileVM implements Serializable {
 
     private String remarks;
 
+    private Integer loanLimit;
+
     private Long createTime;
 
     public UserProfileVM withUser(User user) {
@@ -51,6 +53,7 @@ public class UserProfileVM implements Serializable {
             this.phone = user.getPhone();
             this.email = user.getEmail();
             this.remarks = user.getRemarks();
+            this.loanLimit = user.getLoanLimit();
             this.createTime = Optional.ofNullable(user.getCreateTime()).map(Instant::toEpochMilli).orElse(null);
         }
         return this;

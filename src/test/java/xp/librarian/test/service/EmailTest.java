@@ -21,6 +21,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import xp.librarian.config.ServiceConfig;
+import xp.librarian.model.dto.Loan;
 import xp.librarian.service.mail.MailService;
 
 /**
@@ -59,6 +60,11 @@ public class EmailTest {
         messageHelper.setSubject("test");
         messageHelper.setText("<p>Hello World.</p>", true);
         mailSender.send(message);
+    }
+
+    @Test
+    public void serviceTest() {
+        mailService.noticeLate(new Loan().setUserId(3L).setTraceId(16L));
     }
 
     @Test

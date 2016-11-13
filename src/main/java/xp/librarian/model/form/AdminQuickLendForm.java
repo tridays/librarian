@@ -22,7 +22,7 @@ import xp.librarian.model.validator.MyFuture;
  * @author xp
  */
 @Data
-public class LendBookForm implements Serializable {
+public class AdminQuickLendForm implements Serializable {
 
     private static final long serialVersionUID = -2544070182439216592L;
 
@@ -36,11 +36,14 @@ public class LendBookForm implements Serializable {
     @NotNull
     private Long traceId;
 
+    @NotNull
+    private String username;
+
     @MyFuture
     private Long appointedTime;
 
     public boolean validate(Validator validator) {
-        Set<ConstraintViolation<LendBookForm>> vSet = validator.validate(this);
+        Set<ConstraintViolation<AdminQuickLendForm>> vSet = validator.validate(this);
         if (!vSet.isEmpty()) {
             throw new ValidationException(vSet);
         }

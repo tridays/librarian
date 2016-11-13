@@ -78,6 +78,9 @@ public class LoanService {
         if (!BookTrace.Status.NORMAL.equals(trace.getStatus())) {
             throw new BusinessException(ErrorCode.BOOK_TRACE_STATUS_MISMATCH);
         }
+        if (account.getLoanLimit() < 1) {
+            throw new BusinessException(ErrorCode.LOAN_USER_REMAIN_NO_LOAN_LIMIT);
+        }
 
         Loan loan = form.forSet()
                 .setUserId(account.getId())
@@ -88,14 +91,20 @@ public class LoanService {
             throw new PersistenceException("loan insert failed.");
         }
 
-        BookTrace where = new BookTrace()
-                .setId(trace.getId())
-                .setStatus(BookTrace.Status.NORMAL);
-        BookTrace set = new BookTrace()
-                .setStatus(BookTrace.Status.LOCKED)
-                .setLoanId(loan.getId());
-        if (0 == traceDao.update(where, set)) {
+        if (0 == traceDao.update(
+                new BookTrace()
+                        .setId(trace.getId())
+                        .setStatus(BookTrace.Status.NORMAL),
+                new BookTrace()
+                        .setStatus(BookTrace.Status.LOCKED)
+                        .setLoanId(loan.getId()))) {
             throw new PersistenceException("book trace update failed.");
+        }
+
+        if (0 == userDao.update(
+                new User().setId(account.getId()),
+                new User().setLoanLimit(account.getLoanLimit() - 1))) {
+            throw new PersistenceException("user update failed.");
         }
 
         if (0 == recordDao.add(Record.apply(loan))) {
@@ -131,8 +140,8 @@ public class LoanService {
         return buildLoanVM(loan);
     }
 
-    public void cancelLending(@NonNull AccountContext account,
-                              @NonNull Long loanId) {
+    public LoanVM cancelLending(@NonNull AccountContext account,
+                                @NonNull Long loanId) {
         Loan loan = loanDao.get(loanId);
         if (loan == null) {
             throw new ResourceNotFoundException("loan not found.");
@@ -140,18 +149,31 @@ public class LoanService {
         if (!loan.getUserId().equals(account.getId())) {
             throw new AccessForbiddenException("access denied.");
         }
-        Loan where = new Loan()
-                .setId(loan.getId())
-                .setStatus(Loan.Status.APPLYING);
-        Loan set = new Loan()
-                .setStatus(Loan.Status.CANCELED);
-        if (0 == loanDao.update(where, set)) {
+        if (!Loan.Status.APPLYING.equals(loan.getStatus())) {
+            throw new BusinessException(ErrorCode.LOAN_STATUS_MISMATCH);
+        }
+        if (0 == loanDao.update(
+                new Loan()
+                        .setId(loan.getId())
+                        .setStatus(Loan.Status.APPLYING),
+                new Loan()
+                        .setStatus(Loan.Status.CANCELED))) {
             throw new PersistenceException("loan update failed.");
+        }
+        if (0 == traceDao.update(
+                new BookTrace()
+                        .setId(loan.getTraceId())
+                        .setStatus(BookTrace.Status.LOCKED),
+                new BookTrace()
+                        .setStatus(BookTrace.Status.NORMAL))) {
+            throw new PersistenceException("book trace update failed.");
         }
 
         if (0 == recordDao.add(Record.cancelApplication(loan))) {
             throw new PersistenceException("record failed.");
         }
+
+        return buildLoanVM(loanDao.get(loanId));
     }
 
     public LoanVM renewLending(@NonNull AccountContext account,
@@ -176,7 +198,7 @@ public class LoanService {
                 .setAppointedTime(loan.getAppointedTime());
         Loan set = new Loan()
                 .setRenewCount(loan.getRenewCount() + 1)
-                .setAppointedTime(TimeUtils.after(loan.getAppointedTime(), 30L, ChronoUnit.DAYS));
+                .setAppointedTime(TimeUtils.after(loan.getAppointedTime(), 15L, ChronoUnit.DAYS));
         if (0 == loanDao.update(where, set)) {
             throw new PersistenceException("loan update failed.");
         }
@@ -202,37 +224,47 @@ public class LoanService {
         if (!BookTrace.Status.BORROWED.equals(trace.getStatus())) {
             throw new BusinessException(ErrorCode.BOOK_TRACE_STATUS_MISMATCH);
         }
-        Loan where = new Loan()
-                .setTraceId(trace.getId())
-                .setStatus(Loan.Status.RESERVING);
-        Loan existReservation = loanDao.get(where);
+        Loan loan = loanDao.get(new Loan().setId(trace.getLoanId()));
+        if (Objects.equals(loan.getUserId(), account.getId())) {
+            throw new BusinessException(ErrorCode.LOAN_LENDER_EQUALS_RESERVATION_APPLICANT);
+        }
+        if (account.getLoanLimit() < 1) {
+            throw new BusinessException(ErrorCode.LOAN_USER_REMAIN_NO_LOAN_LIMIT);
+        }
+        Loan existReservation = loanDao.get(
+                new Loan()
+                        .setTraceId(trace.getId())
+                        .setStatus(Loan.Status.RESERVING));
         if (existReservation != null) {
             throw new BusinessException(ErrorCode.LOAN_RESERVATION_EXISTS);
         }
-        Loan loan = form.forSet()
+        Loan reservation = form.forSet()
                 .setUserId(account.getId())
                 .setStatus(Loan.Status.RESERVING)
                 .setIsReservation(true)
                 .setCreateTime(TimeUtils.now());
-        if (0 == loanDao.add(loan)) {
+        if (0 == loanDao.add(reservation)) {
             throw new PersistenceException("loan insert failed.");
         }
 
-        if (0 == recordDao.add(Record.reserve(loan))) {
+        if (0 == recordDao.add(Record.reserve(reservation))) {
             throw new PersistenceException("record failed.");
         }
 
-        return buildLoanVM(loan);
+        return buildLoanVM(reservation);
     }
 
-    public void cancelReservation(@NonNull AccountContext account,
-                                  @NonNull Long loanId) {
+    public LoanVM cancelReservation(@NonNull AccountContext account,
+                                    @NonNull Long loanId) {
         Loan loan = loanDao.get(loanId);
         if (loan == null) {
             throw new ResourceNotFoundException("loan not found.");
         }
         if (!loan.getUserId().equals(account.getId())) {
             throw new AccessForbiddenException("access denied.");
+        }
+        if (!Loan.Status.RESERVING.equals(loan.getStatus())) {
+            throw new BusinessException(ErrorCode.LOAN_STATUS_MISMATCH);
         }
         Loan where = new Loan()
                 .setId(loan.getId())
@@ -246,6 +278,8 @@ public class LoanService {
         if (0 == recordDao.add(Record.cancelReservation(loan))) {
             throw new PersistenceException("record failed.");
         }
+
+        return buildLoanVM(loanDao.get(loanId));
     }
 
 }

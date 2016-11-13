@@ -21,6 +21,8 @@ public class BookVM implements Serializable {
 
     private String name;
 
+    private Book.Status status;
+
     private String publisher;
 
     private List<String> authors;
@@ -39,6 +41,7 @@ public class BookVM implements Serializable {
         if (book != null) {
             this.isbn = book.getIsbn();
             this.name = book.getName();
+            this.status = book.getStatus();
             this.publisher = book.getPublisher();
             this.authors = RegexUtils.extractAuthors(book.getAuthors());
             this.imageUrl = UploadUtils.makeUrl(book.getImagePath());

@@ -31,7 +31,7 @@ public class BookTraceController extends BaseController {
             response = BookTraceVM.class,
             responseContainer = "List"
     )
-    @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/")
+    @GetMapping("books/{isbn:[0-9\\-]+}/traces/")
     public Object getTraces(@PathVariable String isbn, PagingForm paging) {
         return renderForEntities(traceService.getTraces(isbn, paging));
     }
@@ -41,7 +41,7 @@ public class BookTraceController extends BaseController {
             notes = "目前跟列表里的没什么区别。",
             response = BookTraceVM.class
     )
-    @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/traces/{traceId}/")
+    @GetMapping("books/{isbn:[0-9\\-]+}/traces/{traceId}/")
     public Object getTrace(@PathVariable String isbn, @PathVariable Long traceId) {
         return renderForEntity(traceService.getTrace(isbn, traceId));
     }

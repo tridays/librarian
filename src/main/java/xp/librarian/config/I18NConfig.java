@@ -9,6 +9,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import xp.librarian.component.MyMessageSource;
 import xp.librarian.model.context.ErrorCode;
+import xp.librarian.utils.I18N;
 
 /**
  * @author xp
@@ -35,6 +36,8 @@ public class I18NConfig {
         map.put(ErrorCode.BOOK_TRACE_STATUS_MISMATCH.getKey(), "book trace cannot be handled now.");
         map.put(ErrorCode.LOAN_STATUS_MISMATCH.getKey(), "loan cannot be handled now.");
 
+        map.put(ErrorCode.LOAN_USER_REMAIN_NO_LOAN_LIMIT.getKey(), "reach the lend limit.");
+        map.put(ErrorCode.LOAN_LENDER_EQUALS_RESERVATION_APPLICANT.getKey(), "lender equals reservation applicant.");
         map.put(ErrorCode.LOAN_RESERVATION_EXISTS.getKey(), "book trace has been reserved.");
         map.put(ErrorCode.LOAN_REACH_MAX_RENEW_COUNT.getKey(), "reach the max renew count.");
 
@@ -44,7 +47,9 @@ public class I18NConfig {
 
     @Bean
     public MessageSourceAccessor messageSourceAccessor(MessageSource messageSource) {
-        return new MessageSourceAccessor(messageSource);
+        MessageSourceAccessor accessor = new MessageSourceAccessor(messageSource);
+        I18N.messageSourceAccessor = accessor;
+        return accessor;
     }
 
 }

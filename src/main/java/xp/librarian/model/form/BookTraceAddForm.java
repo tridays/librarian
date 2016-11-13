@@ -5,9 +5,10 @@ import java.util.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,12 +24,14 @@ public class BookTraceAddForm implements Serializable {
     private static final long serialVersionUID = -4892039389283782045L;
 
     @ApiModelProperty(hidden = true)
-    @NotBlank
+    @NotNull
+    @Length(min = 13, max = 13)
+    @Pattern(regexp = "[0-9\\-]+")
     private String isbn;
 
     private BookTrace.Status status;
 
-    @Length(max = 63325)
+    @Length(min = 1, max = 63325)
     private String location;
 
     public boolean validate(Validator validator) {

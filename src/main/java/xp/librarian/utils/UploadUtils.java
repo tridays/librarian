@@ -5,6 +5,8 @@ import java.net.*;
 import java.nio.channels.*;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +76,17 @@ public class UploadUtils {
     }
 
     public static String makeUrl(String path) {
-        return String.format("http://%1$s%2$s", ServletUtils.getRequest().getLocalName(), path);
+        if (StringUtils.isEmpty(path)) {
+            return null;
+        }
+        if (path.contains("://")) {
+            return path;
+        }
+        HttpServletRequest request = ServletUtils.getRequest();
+        return String.format("http://%s:%s%s",
+                request.getLocalName(),
+                request.getLocalPort(),
+                path);
     }
 
 }

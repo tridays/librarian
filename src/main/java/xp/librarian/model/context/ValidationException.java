@@ -14,12 +14,16 @@ public class ValidationException extends RuntimeException {
     private static final long serialVersionUID = 3910454411201282029L;
 
     @Getter
-    private Set<String> messages;
+    private Set<Object> messages;
 
     public <T> ValidationException(Set<ConstraintViolation<T>> violations) {
         messages = new HashSet<>(violations.size());
         violations.forEach(e -> {
-            messages.add(e.getMessage());
+            HashMap<String, Object> one = new HashMap<>();
+            one.put("field", e.getPropertyPath().toString());
+            one.put("value", e.getInvalidValue());
+            one.put("message", e.getMessage());
+            messages.add(one);
         });
     }
 

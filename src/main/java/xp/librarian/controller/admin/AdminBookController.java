@@ -44,7 +44,7 @@ public class AdminBookController extends BaseController {
             notes = "。",
             response = BookVM.class
     )
-    @PostMapping("books/{isbn:[0-9A-Za-z\\-]+}/update")
+    @PostMapping("books/{isbn:[0-9\\-]+}/update")
     public Object updateBook(@PathVariable String isbn,
                              BookUpdateForm form) {
         form.setIsbn(isbn);
@@ -55,7 +55,7 @@ public class AdminBookController extends BaseController {
             value = "删除书目",
             notes = "其实只是更改状态为 DELETED。"
     )
-    @PostMapping("books/{isbn:[0-9A-Za-z\\-]+}/delete")
+    @PostMapping("books/{isbn:[0-9\\-]+}/delete")
     public Object deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
         return renderForAction(true);
@@ -77,7 +77,7 @@ public class AdminBookController extends BaseController {
             notes = "目前跟列表里的没什么不同。",
             response = BookVM.class
     )
-    @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/")
+    @GetMapping("books/{isbn:[0-9\\-]+}/")
     public Object getBook(@PathVariable String isbn) {
         return renderForEntity(bookService.getBook(isbn));
     }

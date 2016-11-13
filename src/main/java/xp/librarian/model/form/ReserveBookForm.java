@@ -6,8 +6,9 @@ import java.util.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,7 +24,9 @@ public class ReserveBookForm implements Serializable {
     private static final long serialVersionUID = 8475848013383572700L;
 
     @ApiModelProperty(hidden = true)
-    @NotBlank
+    @NotNull
+    @Length(min = 13, max = 13)
+    @Pattern(regexp = "[0-9\\-]+")
     private String isbn;
 
     @ApiModelProperty(hidden = true)

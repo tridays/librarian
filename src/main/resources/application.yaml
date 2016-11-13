@@ -15,6 +15,11 @@ spring:
       test-on-borrow: false
       time-between-eviction-runs-millis: 188000
       default-transaction-isolation: 2
+      remove-abandoned-on-maintenance: true
+      remove-abandoned-on-borrow: true
+      remove-abandoned-timeout: 30
+      # 当前连接数用尽，多久回收
+      max-wait-millis: 1000
   jackson:
     default-property-inclusion: non_null
     generator:
@@ -43,12 +48,17 @@ spring:
     suffix: .html
     check-template-location: true
     check-template: false
+  mvc:
+    locale: en
+  messages:
+    fallback-to-system-locale: false
 
 mybatis:
   mapper-locations: classpath:xp.librarian.repository.mapper/*.xml
   type-aliases-package: xp.librarian.model.dto
   type-handlers-package: xp.librarian.config.mybatis.type
   executor-type: SIMPLE
+
 server:
   address: 0.0.0.0
   port: 6001

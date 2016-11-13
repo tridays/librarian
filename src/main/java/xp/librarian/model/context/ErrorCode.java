@@ -18,7 +18,9 @@ public enum ErrorCode {
 
     BOOK_TRACE_STATUS_MISMATCH("book_trace.status_mismatch"),
     LOAN_STATUS_MISMATCH("loan.status_mismatch"),
+    LOAN_USER_REMAIN_NO_LOAN_LIMIT("loan.user_remain_no_loan_limit"),
     LOAN_REACH_MAX_RENEW_COUNT("loan.reach_max_renew_count"),
+    LOAN_LENDER_EQUALS_RESERVATION_APPLICANT("loan.lender_equals_reservation_applicant"),
     LOAN_RESERVATION_EXISTS("loan.reservation_exists"),
 
     ;

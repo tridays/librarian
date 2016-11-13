@@ -25,8 +25,8 @@ public class BookAddForm implements Serializable {
     private static final long serialVersionUID = 4634452314301768988L;
 
     @NotNull
-    @Length(min = 10, max = 20)
-    @Pattern(regexp = "[0-9\\-]+")
+    @Length(min = 13, max = 13)
+    @Pattern(regexp = "[0-9]+")
     private String isbn;
 
     @NotNull

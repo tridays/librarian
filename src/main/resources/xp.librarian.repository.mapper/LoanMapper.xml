@@ -7,8 +7,8 @@
             `userId`,
             `traceId`,
             `status`,
-            `createTime`,
             `appointedDuration`,
+            `activeTime`,
             `appointedTime`,
             `expiredTime`,
             `createTime`
@@ -16,8 +16,8 @@
             #{userId},
             #{traceId},
             #{status},
-            #{createTime},
             #{appointedDuration},
+            #{activeTime},
             #{appointedTime},
             #{expiredTime},
             #{createTime}

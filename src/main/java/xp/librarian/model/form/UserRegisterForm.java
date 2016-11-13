@@ -28,8 +28,8 @@ public class UserRegisterForm implements Serializable {
     private static final long serialVersionUID = 4360309392722354036L;
 
     @NotBlank
-    @Length(min = 3, max = 50)
-    @Pattern(regexp = "[0-9A-Za-z_]+")
+    @Length(min = 8, max = 11)
+    @Pattern(regexp = "[0-9]+")
     private String username;
 
     @NotBlank

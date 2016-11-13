@@ -19,6 +19,9 @@ public enum Action {
     CONFIRM_RETURNED,       // 证实归还
     CONFIRM_DISABLED,       // 证实无法归还
 
+    QUICK_LENDING,          // 快速借书
+    QUICK_RETURN,           // 快速还书
+
     // system
     EXPIRED,                // 申请过期
     RESERVED,               // 已预约

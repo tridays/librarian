@@ -32,6 +32,8 @@ public class BookTraceVM implements Serializable {
 
     private LoanVM loan;
 
+    private Boolean isReservable;
+
     private Long createTime;
 
     public BookTraceVM withTrace(BookTrace trace) {

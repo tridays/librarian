@@ -42,7 +42,7 @@ public class BookController extends BaseController {
             notes = "其实跟列表里的没什么区别。",
             response = BookVM.class
     )
-    @GetMapping("books/{isbn:[0-9A-Za-z\\-]+}/")
+    @GetMapping("books/{isbn:[0-9\\-]+}/")
     public Object getBook(@PathVariable String isbn) {
         return renderForEntity(bookService.getBook(isbn));
     }

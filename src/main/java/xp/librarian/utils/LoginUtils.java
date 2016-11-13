@@ -65,7 +65,7 @@ public class LoginUtils {
             CookieUtils.delCookie(COOKIE_NAME);
             return null;
         }
-        return AccountContext.fromDTO(user);
+        return AccountContext.build(user);
     }
 
     public static boolean login(Long userId) {

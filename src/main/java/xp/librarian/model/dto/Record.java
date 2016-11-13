@@ -111,6 +111,24 @@ public class Record implements Serializable {
         return record;
     }
 
+    public static Record quickLending(Loan loan) {
+        Record record = new Record();
+        record.setAction(Action.QUICK_LENDING);
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
+        record.setTime(Instant.now());
+        return record;
+    }
+
+    public static Record quickReturn(Loan loan) {
+        Record record = new Record();
+        record.setAction(Action.QUICK_RETURN);
+        record.setUserId(loan.getUserId());
+        record.setTraceId(loan.getTraceId());
+        record.setTime(Instant.now());
+        return record;
+    }
+
     public static Record expired(Loan loan) {
         Record record = new Record();
         record.setAction(Action.EXPIRED);

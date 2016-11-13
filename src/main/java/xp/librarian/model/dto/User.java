@@ -49,6 +49,8 @@ public class User implements Serializable {
 
     private String remarks;
 
+    private Integer loanLimit;
+
     private Instant createTime;
 
     @Override

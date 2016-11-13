@@ -1,11 +1,14 @@
 package xp.librarian.service.mail;
 
+import java.io.*;
 import java.util.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -30,6 +33,8 @@ import xp.librarian.repository.UserDao;
  */
 @Service
 public class MailService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -56,14 +61,16 @@ public class MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message);
-            messageHelper.setFrom(from);
+            messageHelper.setFrom(from, "Librarian");
             for (String to : toList) {
                 messageHelper.addTo(to);
             }
             messageHelper.setSubject(subject);
             messageHelper.setText(html, true);
             mailSender.send(message);
-        } catch (MessagingException ignored) {}
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            LOG.warn(e.getMessage());
+        }
     }
 
     private String render(String template, Map<String, ?> map) {
@@ -97,7 +104,7 @@ public class MailService {
     }
 
     public void noticeLate(@NonNull Loan loan) {
-        User user = userDao.get(loan.getId(), true);
+        User user = userDao.get(loan.getUserId(), true);
         if (user == null || StringUtils.isEmpty(user.getEmail())) return;
         BookTrace trace = traceDao.get(loan.getTraceId());
         if (trace == null) return;

@@ -26,7 +26,6 @@ public class BookUpdateForm implements Serializable {
 
     @ApiModelProperty(hidden = true)
     @NotNull
-    @Length(min = 10, max = 20)
     private String isbn;
 
     @Length(min = 1, max = 256)

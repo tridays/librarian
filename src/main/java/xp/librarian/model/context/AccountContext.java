@@ -19,18 +19,24 @@ public class AccountContext implements Serializable {
 
     private Set<Role> roles;
 
+    private String email;
+
     private User.Status status;
 
-    public User toDTO() {
+    private Integer loanLimit;
+
+    public User forWhere() {
         return new User()
                 .setId(id);
     }
 
-    public static AccountContext fromDTO(User user) {
+    public static AccountContext build(User user) {
         AccountContext account = new AccountContext();
         account.id = user.getId();
         account.roles = user.getRoles();
+        account.email = user.getEmail();
         account.status = user.getStatus();
+        account.loanLimit = user.getLoanLimit();
         return account;
     }
 

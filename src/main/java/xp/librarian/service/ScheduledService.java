@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import xp.librarian.model.dto.BookTrace;
 import xp.librarian.model.dto.Loan;
 import xp.librarian.model.dto.Record;
+import xp.librarian.model.dto.User;
 import xp.librarian.repository.*;
 import xp.librarian.service.mail.MailService;
 import xp.librarian.utils.TimeUtils;
@@ -50,8 +51,7 @@ public class ScheduledService {
     public void loanApplicationExpiryTick() {
         Instant now = TimeUtils.now();
         List<Loan> loen = loanDao.gets(
-                new Loan()
-                        .setStatus(Loan.Status.APPLYING),
+                new Loan().setStatus(Loan.Status.APPLYING),
                 0L, 0);
         loen.stream()
                 .filter(loan -> now.isAfter(loan.getExpiredTime()))
@@ -64,6 +64,14 @@ public class ScheduledService {
                                     .setStatus(Loan.Status.EXPIRED))) {
                         LOG.error(String.format("loan (%d) update failed.", loan.getId()));
                         return;
+                    }
+                    User user = userDao.get(loan.getUserId());
+                    if (user != null) {
+                        if (0 == userDao.update(
+                                new User().setId(user.getId()),
+                                new User().setLoanLimit(user.getLoanLimit() + 1))) {
+                            LOG.error(String.format("user (%d) update failed.", loan.getUserId()));
+                        }
                     }
                     BookTrace trace = traceDao.get(loan.getTraceId());
                     if (trace != null) {

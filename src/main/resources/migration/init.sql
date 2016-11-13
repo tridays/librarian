@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `User` (
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `remarks` text,
+  `loanLimit` int(10) unsigned NOT NULL DEFAULT '5',
   `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
